@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Правонарушения{% endblock %}
+
+{% block content %}
+<h2>Список правонарушений</h2>
+<a href="{{ url_for('add_offense') }}" class="btn btn-primary mb-3">Добавить правонарушение</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Адрес</th>
+            <th>Тип правонарушения</th>
+            <th>Описание</th>
+            <th>Ответственный</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for offense in offenses %}
+        <tr>
+            <td>{{ offense.date.strftime('%d.%m.%Y') }}</td>
+            <td>{{ offense.address }}</td>
+            <td>{{ offense.offense_type }}</td>
+            <td>{{ offense.description|default('', true) }}</td>
+            <td>{{ offense.author.username }}</td>
+            <td>
+                <a href="{{ url_for('edit_offense', id=offense.id) }}" class="btn btn-sm btn-warning">Редактировать</a>
+                <form action="{{ url_for('delete_offense', id=offense.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Удалить это правонарушение?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

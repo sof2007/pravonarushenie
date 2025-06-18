@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Отчеты{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2><i class="fas fa-file-alt"></i> Отчеты о правонарушениях</h2>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Фильтры</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Дата с</label>
+                    <input type="date" name="start_date" class="form-control" 
+                           value="{{ start_date }}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Дата по</label>
+                    <input type="date" name="end_date" class="form-control" 
+                           value="{{ end_date }}">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Применить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card printable-area">
+        <div class="card-header d-flex justify-content-between">
+            <h5>Результаты</h5>
+            <button onclick="window.print()" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-print"></i> Печать
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Дата</th>
+                            <th>Адрес</th>
+                            <th>Тип</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offense in offenses %}
+                        <tr>
+                            <td>{{ offense.date.strftime('%d.%m.%Y %H:%M') }}</td>
+                            <td>{{ offense.address }}</td>
+                            <td>{{ offense.offense_type }}</td>
+                            <td>{{ offense.description or '-' }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">Нет данных для отображения</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .printable-area, .printable-area * {
+            visibility: visible;
+        }
+        .printable-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
+        .card-header {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h2>Добро пожаловать, {{ current_user.username }}!</h2>
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Правонарушения</h5>
+                <p class="card-text">Управление списком правонарушений</p>
+                <a href="{{ url_for('offenses') }}" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    {% if current_user.is_admin %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Пользователи</h5>
+                <p class="card-text">Управление пользователями системы</p>
+                <a href="{{ url_for('users') }}" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Отчеты</h5>
+                <p class="card-text">Просмотр отчетов и статистики</p>
+                <a href="{{ url_for('reports') }}" class="btn btn-primary">Перейти</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
