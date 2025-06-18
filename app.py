@@ -17,7 +17,7 @@ login_manager.login_view = 'login'
 # Предопределенные типы правонарушений
 OFFENSE_TYPES = [
     'Произрастание на прилегающей территории сорной растительности высотой более 15 см',
-    'Складирование на прилегающей территории строительных материалов, топлива, удобрения и иных движемых вещей',
+    'Складирование на прилегающей территории строительных материалов, топлива, удобрения и иных движимых вещей',
     'Создание условий для подтопления соседних территорий и земельных участков',
     'кладирование металлического лома, строительного мусора, угля, дров и других материалов и отходов производства и потребления',
     'Хранение техники, механизмов, автомобилей (нагрузка на ось 3,5 т и более)'
@@ -72,8 +72,7 @@ def add_offense():
         # Создаем объект правонарушения
         new_offense = Offense(
             address=request.form['address'],
-            date=datetime.utcnow(),  # Используем текущую дату
-            check_date=datetime.utcnow() + timedelta(days=7),  # Дата проверки через 7 дней
+            date=datetime.strptime(request.form['date'], '%Y-%m-%d'),  # Используем дату из формы
             offense_type=request.form['offense_type'],
             description=request.form.get('description', ''),
             user_id=current_user.id,
@@ -95,7 +94,7 @@ def edit_offense(id):
     
     if request.method == 'POST':
         offense.address = request.form['address']
-        offense.date = datetime.datetime.strptime(request.form['date'], '%Y-%m-%d')
+        offense.date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         offense.offense_type = request.form['offense_type']
         offense.description = request.form.get('description', '')
         
